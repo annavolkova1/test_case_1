@@ -18,6 +18,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -32,6 +34,7 @@ public class MainController implements Runnable {
   WellService wellService = new WellServiceImpl();
   EquipmentService equipmentService = new EquipmentServiceImpl();
   Scanner scanner = new Scanner(System.in);
+  private static final Logger logger = LogManager.getLogger(MainController.class);
 
   @Override
   public void run() {
@@ -58,7 +61,7 @@ public class MainController implements Runnable {
             throw new WrongOperationException();
           }
           catch (WrongOperationException woe) {
-            woe.printStackTrace();
+            logger.error("This is error : " + woe.getMessage(), woe);
           }
       }
 
@@ -129,8 +132,8 @@ public class MainController implements Runnable {
       try {
         throw new NoDataException();
       }
-      catch (NoDataException e) {
-        e.printStackTrace();
+      catch (NoDataException exception) {
+        logger.error("This is error : " + exception.getMessage(), exception);
       }
     }
     else {
@@ -186,8 +189,8 @@ public class MainController implements Runnable {
 
       System.out.println("Done creating XML File");
     }
-    catch (ParserConfigurationException | TransformerException pce) {
-      pce.printStackTrace();
+    catch (ParserConfigurationException | TransformerException exception) {
+      logger.error("This is error : " + exception.getMessage(), exception);
     }
   }
 

@@ -13,19 +13,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
-
 
 public class EquipmentDaoImpl implements EquipmentDao {
 
-  private final static String INSERT_EQUIPMENT = "INSERT INTO equipment (name, Well_id) VALUES (?, ?)";
-  private final static String SELECT_ALL_EQUIPMENT = "SELECT id, name, Well_id FROM equipment";
+  private static final String INSERT_EQUIPMENT = "INSERT INTO equipment (name, Well_id) VALUES (?, ?)";
+  private static final String SELECT_ALL_EQUIPMENT = "SELECT id, name, Well_id FROM equipment";
+  private static final Logger logger = LogManager.getLogger(EquipmentDaoImpl.class);
 
   @Override
   public void createEquipment(@NotNull Equipment equipment) {
 
     try (Connection connection = ConnectionProvider.getConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_EQUIPMENT, Statement.RETURN_GENERATED_KEYS)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(INSERT_EQUIPMENT,
+            Statement.RETURN_GENERATED_KEYS)) {
       equipment.setName(generateName());
       preparedStatement.setString(1, equipment.getName());
       preparedStatement.setLong(2, equipment.getWellId());
@@ -47,7 +50,7 @@ public class EquipmentDaoImpl implements EquipmentDao {
       }
     }
     catch (SQLException throwable) {
-      throwable.printStackTrace();
+      logger.error("This is error : " + throwable.getMessage(), throwable);
     }
   }
 
@@ -69,8 +72,8 @@ public class EquipmentDaoImpl implements EquipmentDao {
         map.put(name, amount);
       }
     }
-    catch (SQLException exception) {
-      exception.printStackTrace();
+    catch (SQLException throwable) {
+      logger.error("This is error : " + throwable.getMessage(), throwable);
     }
 
     return map;
@@ -94,7 +97,7 @@ public class EquipmentDaoImpl implements EquipmentDao {
       }
     }
     catch (SQLException throwable) {
-      throwable.printStackTrace();
+      logger.error("This is error : " + throwable.getMessage(), throwable);
     }
 
     return equipments;

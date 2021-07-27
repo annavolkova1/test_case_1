@@ -5,8 +5,12 @@ import com.testTask.domain.Well;
 import com.testTask.service.WellService;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class WellServiceImpl implements WellService {
+
+  private static final Logger logger = LogManager.getLogger(WellServiceImpl.class);
 
   public WellServiceImpl() {
 
@@ -24,7 +28,7 @@ public class WellServiceImpl implements WellService {
       return well;
     }
     catch (NullPointerException npe) {
-      npe.printStackTrace();
+      logger.error("This is error : " + npe.getMessage(), npe);
     }
 
     return null;

@@ -10,13 +10,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 public class WellDaoImpl implements WellDao {
 
-  private final static String SELECT_ALL_WELL = "SELECT id, name FROM well";
-  private final static String SELECT_BY_NAME = "SELECT id, name FROM well WHERE name = ?";
-  private final static String INSERT_WELL = "INSERT INTO well (name) VALUES (?)";
+  private static final String SELECT_ALL_WELL = "SELECT id, name FROM well";
+  private static final String SELECT_BY_NAME = "SELECT id, name FROM well WHERE name = ?";
+  private static final String INSERT_WELL = "INSERT INTO well (name) VALUES (?)";
+  private static final Logger logger = LogManager.getLogger(WellDaoImpl.class);
 
   @Override
   public List<Well> getAllWells() {
@@ -35,7 +38,7 @@ public class WellDaoImpl implements WellDao {
       }
     }
     catch (SQLException throwable) {
-      throwable.printStackTrace();
+      logger.error("This is error : " + throwable.getMessage(), throwable);
     }
 
     return wells;
@@ -68,7 +71,7 @@ public class WellDaoImpl implements WellDao {
       return well;
     }
     catch (SQLException throwable) {
-      throwable.printStackTrace();
+      logger.error("This is error : " + throwable.getMessage(), throwable);
     }
 
     return null;
@@ -87,7 +90,7 @@ public class WellDaoImpl implements WellDao {
       }
     }
     catch (SQLException throwable) {
-      throwable.printStackTrace();
+      logger.error("This is error : " + throwable.getMessage(), throwable);
     }
 
     return null;
@@ -108,7 +111,7 @@ public class WellDaoImpl implements WellDao {
       well = new Well(id, name);
     }
     catch (SQLException throwable) {
-      throwable.printStackTrace();
+      logger.error("This is error : ", throwable);
     }
 
     return well;
